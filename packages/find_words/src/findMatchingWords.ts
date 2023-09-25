@@ -1,10 +1,15 @@
-import { performance } from 'perf_hooks';
-
 import { graphCombinations } from "./utils/graphCombinations";
 import { removeIndex } from "./utils/removeIndex";
 import { sanitize } from "./utils/sanitize";
+import { startPerformance } from './utils/startPerformance';
 import { WORDS } from "./words";
 
+/**
+ * @combinations total combinations checked.
+ * @total total number of matches.
+ * @foundMatches string[] of those matches.
+ * @duration time in `ms` for the graph to finish.
+ */
 export interface FindMatchingWords {
   combinations: number;
   total: number;
@@ -14,17 +19,16 @@ export interface FindMatchingWords {
 
 export const EMPTY_RESPONSE = { combinations: 0, total: 0, foundMatches: [], duration: 0 };
 
-const start = (name: string) => {
-  performance.mark(`${name}:start`);
-  return () => performance.measure(`${name}:end`, `${name}:start`);;
-};
-
+/**
+ * @param provided `string` word to graph against our dictionary.
+ * @returns `FindMatchingWords`
+ */
 export function findMatchingWords(provided: string): FindMatchingWords {
   const word = sanitize(provided);
   if (!word) return EMPTY_RESPONSE;
 
   // Start the performance closure.
-  const measure = start('findMatchingWords');
+  const done = startPerformance('findMatchingWords');
   
   // Track the matches we found.
   const foundMatches = new Set<string>();
@@ -45,7 +49,7 @@ export function findMatchingWords(provided: string): FindMatchingWords {
     predicate(letter);
     graphCombinations(removeIndex(letters, idx), letter, predicate);
   });
-  const { duration } = measure();
+  const { duration } = done();
 
   return {
     combinations,
