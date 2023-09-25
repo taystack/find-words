@@ -5,7 +5,7 @@ Example Typescript application using both a backend server and a frontend server
 This project utilizes `yarn workspaces` to manage all typescript packages.
 
 ## Installation
-Ensure you are on the correct version of `node`. You can do this by running `which node` and comparing against the `.nvmrc`.
+Ensure you are on the correct version of `node`. You can do this by running `node -v` and comparing against the `.nvmrc`.
 
 ```bash
 node -v
