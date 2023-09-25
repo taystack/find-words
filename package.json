@@ -1,0 +1,27 @@
+{
+  "name": "word_soup",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "nodemon": "^3.0.1"
+  },
+  "scripts": {
+    "start": "yarn build:find-words && concurrently \"yarn start:find-words\" \"yarn start:frontend\" \"yarn start:backend\"",
+    "start:find-words": "yarn workspace @local/find-words start",
+    "start:frontend": "yarn workspace frontend start", 
+    "start:backend": "yarn workspace backend start",
+    "build": "",
+    "build:find-words": "yarn workspace @local/find-words build",
+    "test": "concurrently \"yarn test:frontend\" \"yarn test:backend\"",
+    "test:find-words": "yarn workspace @local/find-words test",
+    "test:frontend": "yarn workspace frontend test"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  }
+}
